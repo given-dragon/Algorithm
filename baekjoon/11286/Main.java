@@ -23,7 +23,6 @@ public class Main {
             else
                 pQueue.add(num);
         }
-
         bw.write(sb.toString());
         bw.flush();
         bw.close();
