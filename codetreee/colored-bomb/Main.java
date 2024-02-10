@@ -201,10 +201,7 @@ public class Main {
     }
 
     private static boolean isOutOfBoundary(int nr, int nc) {
-        if (nr < 0 || n <= nr || nc < 0 || n <= nc) {
-            return true;
-        }
-        return false;
+        return nr < 0 || n <= nr || nc < 0 || n <= nc;
     }
 
     static class Coord {
