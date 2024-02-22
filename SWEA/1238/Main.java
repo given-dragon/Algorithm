@@ -50,20 +50,18 @@ public class Main {
             while (currSize-- > 0) {
 
                 int target = queue.poll();
+                maxNode = Math.max(maxNode, node);
                 for (int node : nodeInfo[target]) {
                     if (isVisited[node]) {
                         continue;
                     }
 
-                    maxNode = Math.max(maxNode, node);
                     queue.offer(node);
                     isVisited[node] = true;
                 }
             }
 
-            if (maxNode != 0) {
-                lastMaxNode = maxNode;
-            }
+            lastMaxNode = maxNode;
         }
 
         return lastMaxNode;
