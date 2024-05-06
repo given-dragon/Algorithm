@@ -6,6 +6,9 @@ import java.util.*;
  *  row -> 0 ~ N-2
  *  col -> 1 ~ N-1
  *
+ * 디저트 개수
+ *  (a+b)*2
+ *
  *  [풀이]
  *  1. 시작점 선택 -> r, c
  *  2. 사각형의 두 변 길이 선택 -> a, b   | a:1~N, b:1~N
@@ -14,7 +17,8 @@ import java.util.*;
  *      - (r+a, c+a) => 최대 col
  *      - (r+a+b, c+a-b) => 최대 row
  *      - (r+b, c-b) => 최소 col
- *      최대, 최소 값들을이 map에 포함되는지 확인
+ *      # 최대, 최소 값들을이 map에 포함되는지 확인
+ *      # (a*b)*2 가 maxCnt보다 큰지 확인
  *  3. 만족한다면 이동 시작
  *      이동하며 boolean 배열로 먹은 디저트 번호 체크
  *      중복되는 번호 존재 시 2부터 재시작
@@ -49,7 +53,7 @@ public class Solution {
 
             int maxRow = N-2;
             int maxCol = N-1;
-            int maxCnt = 0;
+            int maxCnt = -1;
             // select start point
             for (int r = 0; r < maxRow; r++) {
                 for (int c = 1; c < maxCol; c++) {
@@ -63,8 +67,10 @@ public class Solution {
                             if ((c + a >= N) || (c - b < 0)) {  // 최소 & 최대 col 체크
                                 continue;
                             }
+                            if (((a + b) << 1) <= maxCnt) {
+                                continue;
+                            }
 
-                            int cnt = 1;
                             currPoint = new int[]{r, c};
                             check = new boolean[101];
                             check[map[r][c]] = true;
@@ -73,37 +79,30 @@ public class Solution {
                                 if (!move(0)) {
                                     continue outer;
                                 }
-                                cnt++;
                             }
-
                             for (int m = 1; m <= b; m++) {
                                 if (!move(1)) {
                                     continue outer;
                                 }
-                                cnt++;
                             }
-
                             for (int m = 1; m <= a; m++) {
                                 if (!move(2)) {
                                     continue outer;
                                 }
-                                cnt++;
                             }
-
                             for (int m = 1; m < b; m++) {
                                 if (!move(3)) {
                                     continue outer;
                                 }
-                                cnt++;
                             }
 
-                            maxCnt = Math.max(maxCnt, cnt);
+                            maxCnt = ((a + b) << 1);
                         }
                     }
                 }
             }
 
-            sb.append('#').append(tc).append(' ').append(maxCnt==0 ? -1 : maxCnt).append('\n');
+            sb.append('#').append(tc).append(' ').append(maxCnt).append('\n');
         }
         bw.append(sb);
         bw.flush();
@@ -113,10 +112,6 @@ public class Solution {
         currPoint[0] += dr[d];
         currPoint[1] += dc[d];
         int no = map[currPoint[0]][currPoint[1]];
-        if (check[no]) {
-            return false;
-        }
-        check[no] = true;
-        return true;
+        return check[no] = !check[no];
     }
 }
