@@ -75,7 +75,7 @@ public class Main {
             return node;
         }
 
-        return find(node = parent[node]);
+        return parent[node] = find(parent[node]);
     }
 }
 
